@@ -24,7 +24,11 @@ const handleRegister = async () => {
     try {
         const response = await axios.post('http://localhost:8000/api/v1/register', form.value);
         console.log(response);
-        router.push('/login');
+        
+        localStorage.setItem('token', response.data.access_token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        router.push('/dashboard');
+
     } catch (error) {
         console.log(error);
         errors.value = error.response.data.errors;
