@@ -34,7 +34,7 @@ const handleRegister = async () => {
 
 <template>
 <section class="relative w-full h-screen flex-col dark:bg-gray-900 dark:text-white text-gray-900 items-center justify-center grid lg:grid-cols-2 px-0">
-    <div class="relative order-last hidden h-screen flex-col bg-muted p-10 text-white dark:border-r border-gray-600 lg:flex">
+    <div class="relative order-last hidden h-screen flex-col bg-muted p-10 text-white dark:border-l border-gray-600 lg:flex">
       <div class="absolute inset-0 bg-cover">
         <img src="../assets/img/bg-register.jpg" alt="">
       </div>
