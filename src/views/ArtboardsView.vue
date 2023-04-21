@@ -10,6 +10,7 @@ import Modal from '../components/Modal.vue';
 import useArtboards from '../composables/Artboards.js';
 import useArtists from '../composables/Artists.js';
 import useCategories from '../composables/Categories.js';
+import SearchModal from '../components/SearchModal.vue';
 
 const { artboards, getArtboards, meta, goToPage } = useArtboards();
 const { artists, getArtists } = useArtists();
@@ -297,15 +298,9 @@ const dropImage = (e) => {
                     </p>
                 </div>
 
-                <form class="flex items-center" autocomplete="off">   
-                    <label for="simple-search" class="sr-only">Search</label>
-                    <div class="relative w-96">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <Icon icon="mdi:magnify" width="20" />
-                        </div>
-                        <input v-model="searchQuery" type="text" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none" placeholder="Search">
-                    </div>
-                </form>
+                <div class="flex items-center">   
+                    <SearchModal class="w-96" />
+                </div>
                 <div class="flex gap-x-4">
                     <button @click="toggleDark()">
                         <span v-if="isDark" title="Light Mode">

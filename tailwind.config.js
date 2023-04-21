@@ -6,7 +6,11 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        xxs : '0.625rem',
+      },
+    },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
       display: ['Volkhov', 'serif'],
