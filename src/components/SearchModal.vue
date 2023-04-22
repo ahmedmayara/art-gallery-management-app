@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
 import { useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import { useDark, useToggle } from '@vueuse/core';
@@ -20,11 +20,14 @@ const onKeyDown = (e) => {
 }
 
 const selectedIndex = ref(0);
+const artworksRefs = ref([]);
 
 const getAllArtboards = async () => {
     try {
         const response = await axios.get('http://localhost:8000/api/artboards/all');
         artworks.value = response.data.data;
+        await nextTick();
+        artworksRefs.value = [];
         console.log(response);
     } catch (error) {
         if (error.response && error.response.data) {
@@ -52,6 +55,29 @@ onUnmounted(() => {
     window.removeEventListener('keydown', onKeyDown)
 });
 
+const onSubmit = () => {
+    router.push(`/artboards/${filtredArtworks.value[selectedIndex.value].id}`);
+    isOpen.value = false;
+}
+
+const navigateArtwokrs = (e) => {
+    if (e.key === 'ArrowDown') {
+        selectedIndex.value = selectedIndex.value + 1;
+        if (selectedIndex.value > filtredArtworks.value.length - 1) {
+            selectedIndex.value = 0;
+        }
+    }
+
+    if (e.key === 'ArrowUp') {
+        selectedIndex.value = selectedIndex.value - 1;
+        if (selectedIndex.value < 0) {
+            selectedIndex.value = filtredArtworks.value.length - 1;
+        }
+    }
+
+    artworksRefs.value[selectedIndex.value]?.scrollIntoView(false);
+}
+
 </script>
 
 <template>
@@ -62,7 +88,7 @@ onUnmounted(() => {
     </button>
 
     <TransitionRoot :show="isOpen" as="template">
-        <Dialog class="fixed inset-0 z-50 flex justify-center items-start" :open="isOpen" @close="isOpen = false">
+        <Dialog @keydown="navigateArtwokrs" class="fixed inset-0 z-50 flex justify-center items-start" :open="isOpen" @close="isOpen = false">
             <TransitionChild as="template"
                 enter="duration-300 ease-out"
                 enter-from="opacity-0"
@@ -83,7 +109,7 @@ onUnmounted(() => {
             leave-to="opacity-0 scale-95"
             >
                 <DialogPanel class="relative flex flex-col w-full max-w-2xl bg-white rounded-lg mx-4 max-h-[80vh] mt-[10vh] overflow-hidden dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        <form action="#" class="flex items-center relative">
+                        <form action="#" class="flex items-center relative" @submit.prevent="onSubmit">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                 <Icon icon="ph:magnifying-glass-duotone" class="flex-none text-gray-400 -ml-1 w-5 h-5" />
                             </div>
@@ -97,7 +123,7 @@ onUnmounted(() => {
 
                         <div class="overflow-auto">
                             <ul v-if="filtredArtworks.length > 0" class="divide-y divide-gray-200 dark:divide-gray-600">
-                                <li @click="router.push('artboards/' + item.id)" :class="{ 'bg-gray-100 dark:bg-gray-500' : selectedIndex === index }" @mousemove="selectedIndex = index" v-for="(item, index) in filtredArtworks" :key="index" class="flex items-center px-4 py-2.5 cursor-pointer">
+                                <li :ref="el => {artworksRefs[index] = el}" @click="router.push('artboards/' + item.id)" :class="{ 'bg-gray-100 dark:bg-gray-500' : selectedIndex === index }" @mousemove="selectedIndex = index" v-for="(item, index) in filtredArtworks" :key="index" class="flex items-center px-4 py-2.5 cursor-pointer">
                                     <img :src="item.image" :alt="item.name" class="w-16 h-16 rounded-full object-cover border-white border-2 shrink-0 bg-gray-200" />
                                     <div class="ml-3">
                                         <div class="font-semibold text-gray-600 dark:text-white">
