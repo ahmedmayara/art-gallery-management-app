@@ -22,6 +22,14 @@ const getAllArtboards = async () => {
     }
 };
 
+const isLoading = ref(false);
+
+const getArtboards = async () => {
+    isLoading.value = true;
+    await getAllArtboards();
+    isLoading.value = false;
+}
+
 const artboards = ref([]);
 
 const searchQuery = ref('');
@@ -31,7 +39,7 @@ const filtredArtboards = computed(() => {
 });
 
 onMounted(() => {
-    getAllArtboards();
+    getArtboards();
     localStorage.setItem('cart', JSON.stringify(cart.value));
 });
 
@@ -204,7 +212,11 @@ const form = ref({
             </div> -->
 
             <div class="flex justify-center items-center">
-                <span v-if="filtredArtboards.length === 0" class="text-center text-3xl text-gray-900 dark:text-gray-500 font-bold pt-5">Nothing found.</span>
+                <span v-if="(isLoading === false && filtredArtboards.length === 0)" class="text-center text-3xl text-gray-900 dark:text-gray-500 font-bold pt-5">Nothing found.</span>
+            </div>
+
+            <div v-if="isLoading" class="flex justify-center items-center">
+                <Icon icon="mingcute:loading-fill" class="w-12 h-12 my-6 animate-spin text-gray-900 dark:text-gray-500" />
             </div>
             <div class="columns-1 md:columns-3 gap-x-8 pt-2"> 
                 <figure class="py-4 [break-inside:avoid]" v-for="artboard in filtredArtboards" :key="artboard.id">
