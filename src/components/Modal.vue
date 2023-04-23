@@ -58,7 +58,7 @@ watch(
                         class="fixed inset-0 transition-opacity"
                         aria-hidden="true"
                     >
-                        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+                        <div class="absolute inset-0 bg-black/50"></div>
                     </div>
                 </Transition>
 
@@ -80,19 +80,19 @@ watch(
                         aria-modal="true"
                         aria-labelledby="modal-headline"
                     >
-                        <div class="bg-gray-50 dark:bg-gray-900 px-4 py-5 sm:px-6 sm:flex sm:items-center sm:justify-between border-b dark:border-gray-600">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100" id="modal-headline">
+                        <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:px-6 sm:flex sm:items-center sm:justify-between border-b dark:border-gray-600">
+                            <h3 class="text-lg leading-6 font-medium text-gray-800 dark:text-gray-100" id="modal-headline">
                                 <slot name="header" />
                             </h3>
                         </div>
-                        <div class="bg-gray-50 dark:bg-gray-900 px-4 sm:p-6 sm:pb-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 px-4 sm:p-6 sm:pb-4">
                             <div>
                                 <div class="mt-3 text-center sm:mt-0 sm:text-left">
                                     <slot name="body" />
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-gray-50 dark:bg-gray-900 px-4 py-5 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <div class="bg-gray-50 dark:bg-gray-800 px-4 py-5 sm:px-6 sm:flex sm:flex-row-reverse">
                             <slot name="footer" />
                         </div>
                     </div>

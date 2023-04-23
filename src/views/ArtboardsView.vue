@@ -17,7 +17,7 @@ const { artists, getArtists } = useArtists();
 const { categories, getCategories } = useCategories();
 
 onMounted(() => {
-    getArtboards();
+    getAllArtboards();
     getArtists();
     getCategories();
 });
@@ -251,6 +251,15 @@ const dropImage = (e) => {
     newArtboard.value.image = file;
     selectedFileName.value = file.name;
 }
+
+const isLoading = ref(false);
+
+const getAllArtboards = async () => {
+    isLoading.value = true;
+    await getArtboards();
+    isLoading.value = false;
+}
+
 </script>
 
 <template>
@@ -458,9 +467,15 @@ const dropImage = (e) => {
                         </th>
                     </tr>
                 </thead>
-                <tr v-if="filtredArtboards.length === 0">
-                    <td colspan="6" class="text-center text-xl text-gray-900 dark:text-gray-500 font-bold pt-5">No results found</td>
+
+                <tr v-if="isLoading">
+                    <td class="px-6 py-4 whitespace-nowrap" colspan="6">
+                        <div class="flex justify-center items-center">
+                            <Icon icon="mingcute:loading-fill" class="w-10 h-10 text-gray-400 dark:text-gray-500 animate-spin" />
+                        </div>
+                    </td>
                 </tr>
+
                 <tr v-for="artboard in filtredArtboards" :key="artboard.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="flex gap-x-4 items-center py-4 pl-5">
                         <div class="relative">
@@ -472,11 +487,6 @@ const dropImage = (e) => {
                             </div>
                         </div>
                     </td>
-                    <!-- <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm font-medium text-gray-500">
-                            {{ artboard.title }}
-                        </div>
-                    </td> -->
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm text-gray-900 dark:text-gray-500">
                             {{ artboard.price }} $
