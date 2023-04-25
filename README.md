@@ -25,6 +25,7 @@ The following technologies were used to build the application:
 - MySQL 5.7 (Database)
 - Tailwind CSS (Styling Framework)
 - Headless UI (Vue.js Component Library)
+- Chart.js (JavaScript Charting Library)
 - Moment.js (Date and Time Library)
 - Git (Version Control System)
 - GitHub (Code Hosting and Collaboration Platform)
