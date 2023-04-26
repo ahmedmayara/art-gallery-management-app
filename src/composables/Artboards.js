@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import axios from "axios";
+import router from "../router";
 
 export default function useArtboards() {
     const artboards = ref([]);
@@ -74,6 +75,7 @@ export default function useArtboards() {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
+            router.push({ name: "artboards" });
         } catch (error) {
             if (error.response.status === 422) {
                 errors.value = error.response.data.errors;
