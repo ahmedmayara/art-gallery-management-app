@@ -133,7 +133,7 @@ const form = ref({
                                     leave-from-class="transform opacity-100 scale-100"
                                     leave-to-class="transform opacity-0 scale-95"
                                 >
-                                    <MenuItems :class="{ 'absolute right-5 z-50 w-72 md:w-96 mt-2 top-6 bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded-md shadow-lg outline-none' : cart.length > 0 }" class="absolute right-1 z-50 w64 md:w-80 mt-2 top-6 bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded-md shadow-lg outline-none">
+                                    <MenuItems :class="{ 'absolute right-5 z-50 w-72 md:w-96 mt-2 top-6 bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded-md shadow-lg outline-none' : cart.length > 0 }" class="absolute right-1 z-50 w-64 md:w-96 mt-2 top-6 bg-white dark:bg-gray-700 divide-y divide-gray-100 dark:divide-gray-600 rounded-md shadow-lg outline-none">
                                         <div class="px-4 py-2">
                                             <p class="text-sm leading-5 text-center">
                                                 Cart
