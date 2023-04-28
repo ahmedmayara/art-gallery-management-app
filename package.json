@@ -17,6 +17,7 @@
     "axios": "^1.3.4",
     "bootstrap-icons": "^1.10.3",
     "chart.js": "^4.2.1",
+    "class-variance-authority": "^0.6.0",
     "flowbite": "^1.6.4",
     "moment": "^2.29.4",
     "pinia": "^2.0.34",
