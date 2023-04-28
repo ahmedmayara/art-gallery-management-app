@@ -64,14 +64,13 @@ const sidebar = [
         path: '/orders',
     },
 ]
+
+
 </script>
 
 <template>
     <section
         class="w-full min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-white flex transition-all duration-500 ease-in-out">
-        <div id="alerts-container" class="absolute top-8 right-8 z-50">
-                <!-- alerts will be dynamically added here -->
-        </div>
         <aside class="py-6 px-10 w-72 border-r border-gray-200 dark:border-gray-600 hidden lg:block">
             <div class="flex justify-center items-center">
                 <a href="#" class="font-display text-2xl">Artivity</a>

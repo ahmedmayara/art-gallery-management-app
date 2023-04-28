@@ -11,6 +11,9 @@ import useArtboards from '../composables/Artboards.js';
 import useArtists from '../composables/Artists.js';
 import useCategories from '../composables/Categories.js';
 import SearchModal from '../components/SearchModal.vue';
+import Toast from '../components/Toast.vue';
+import MdiCheck from '~icons/mdi/check'
+import MdiClose from '~icons/mdi/close'
 
 const { artboards, getArtboards, meta, goToPage } = useArtboards();
 const { artists, getArtists } = useArtists();
@@ -119,7 +122,7 @@ const handleDeleteArtboard = async () => {
         console.log(response);
         showDeleteConfirmationModal.value = false;
         getArtboards();
-        showDeleteAlert();
+        showDeleteToaster.value = true;
     } catch (error) {
         if (error.response.status === 400 ) {
             message.value = error.response.data.message;
@@ -189,7 +192,7 @@ const handleAddArtboard = async () => {
         console.log(response);
         showAddArtboardModal.value = false;
         getArtboards();
-        addSuccessAlert();
+        showSuccessToaster.value = true;
     } catch (error) {
         if (error.response && error.response.data) {
             errors.value = error.response.data.errors;
@@ -213,38 +216,6 @@ watchEffect(() => {
     selectedFileName.value = '';
 })
 
-const addSuccessAlert = () => {
-    const alertContainer = document.getElementById('alerts-container');
-    const alertDiv = document.createElement('div');
-    alertDiv.innerHTML = `<div class="flex p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline flex-shrink-0 mr-2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m-2 15l-5-5l1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9Z"/></svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Success! Artboard added successfully.</span>
-                            </div>
-                            </div>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 4000);
-}
-
-const showDeleteAlert = () => {
-    const alertContainer = document.getElementById('alerts-container');
-    const alertDiv = document.createElement('div');
-    alertDiv.innerHTML = `<div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline flex-shrink-0 mr-2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m5 5h-2.5l-1-1h-3l-1 1H7v2h10V7M9 18h6a1 1 0 0 0 1-1v-7H8v7a1 1 0 0 0 1 1Z"/></svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Success! Artboard deleted successfully.</span>
-                            </div>
-                            </div>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 4000);
-}
-
 const dropImage = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -260,14 +231,16 @@ const getAllArtboards = async () => {
     isLoading.value = false;
 }
 
+const showSuccessToaster = ref(false);
+const showDeleteToaster = ref(false);
+
 </script>
 
 <template>
     <section
         class="w-full min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-white flex transition-all duration-500 ease-in-out">
-        <div id="alerts-container" class="absolute top-8 right-8 z-50">
-                <!-- alerts will be dynamically added here -->
-        </div>
+        <Toast :show="showSuccessToaster" @close="showSuccessToaster = false" message="Artboard added successfully." :icon="MdiCheck" variant="success" />
+        <Toast :show="showDeleteToaster" @close="showDeleteToaster = false" message="Artboard deleted successfully." :icon="MdiClose" variant="danger" />
         <aside class="py-6 px-10 w-72 border-r border-gray-200 dark:border-gray-600 hidden lg:block">
             <div class="flex justify-center items-center">
                 <a href="#" class="font-display text-2xl">Artivity</a>
