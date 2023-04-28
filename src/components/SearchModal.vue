@@ -14,7 +14,8 @@ const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
 const onKeyDown = (e) => {
-    if (e.key === 'b' && e.ctrlKey) {
+    if (e.key === 'k' && e.ctrlKey) {
+        e.preventDefault();
         isOpen.value = true
     }
 }
@@ -84,7 +85,7 @@ const navigateArtwokrs = (e) => {
     <button v-bind="$attrs" @click="isOpen = true" class="flex items-center space-x-2 border dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white border-gray-900/10 px-3 py-2 hover:border-gray-300 dark:hover:border-gray-500 focus:outline-none focus:border-gray-300 rounded-lg">
         <Icon icon="ph:magnifying-glass-duotone" class="flex-none text-gray-400 -ml-1 w-5 h-5" />
         <span class="text-sm text-gray-400 flex-1 text-left">Search</span>
-        <span class="flex-none font-semibold text-xs text-gray-400">Ctrl + B</span>
+        <span class="flex-none font-semibold text-xs text-gray-400">Ctrl + K</span>
     </button>
 
     <TransitionRoot :show="isOpen" as="template">
