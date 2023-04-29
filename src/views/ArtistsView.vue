@@ -7,7 +7,11 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import moment from 'moment';
 import Modal from '../components/Modal.vue';
+import Toast from '../components/Toast.vue';
 import useArtists from '../composables/Artists';
+import MdiCheck from '~icons/mdi/check'
+import MdiClose from '~icons/mdi/close'
+import MdiInformationVariantCircleOutline from '~icons/mdi/information-variant-circle-outline'
 
 const { artists, getArtists } = useArtists();
 
@@ -110,7 +114,7 @@ const handleAddArtist = async () => {
         console.log(response);
         showAddArtistModal.value = false;
         getArtists();
-        addSuccessAlert();
+        showSuccessToaster.value = true;
     } catch (error) {
         if (error.response && error.response.data) {
             errors.value = error.response.data.errors;
@@ -118,54 +122,6 @@ const handleAddArtist = async () => {
             console.log(error);
         }
     }
-}
-
-const addSuccessAlert = () => {
-    const alertContainer = document.getElementById('alerts-container');
-    const alertDiv = document.createElement('div');
-    alertDiv.innerHTML = `<div class="flex p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline flex-shrink-0 mr-2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m-2 15l-5-5l1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9Z"/></svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Success! Artist added successfully.</span>
-                            </div>
-                            </div>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 4000);
-}
-
-const showDeleteAlert = () => {
-    const alertContainer = document.getElementById('alerts-container');
-    const alertDiv = document.createElement('div');
-    alertDiv.innerHTML = `<div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline flex-shrink-0 mr-2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12S6.47 2 12 2m5 5h-2.5l-1-1h-3l-1 1H7v2h10V7M9 18h6a1 1 0 0 0 1-1v-7H8v7a1 1 0 0 0 1 1Z"/></svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Success! Artist deleted successfully.</span>
-                            </div>
-                            </div>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 4000);
-}
-
-const showEditAlert = () => {
-    const alertContainer = document.getElementById('alerts-container');
-    const alertDiv = document.createElement('div');
-    alertDiv.innerHTML = `<div class="flex p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline flex-shrink-0 mr-2" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10s10-4.5 10-10S17.5 2 12 2m-2 15l-5-5l1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9Z"/></svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Success! Artist updated successfully.</span>
-                            </div>
-                            </div>`;
-    alertContainer.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 4000);
 }
 
 // Clear the inputs after closing the modal
@@ -211,7 +167,7 @@ const handleDeleteArtist = async () => {
         console.log(response);
         showDeleteConfirmationModal.value = false;
         getArtists();
-        showDeleteAlert();
+        showDeleteToaster.value = true;
     } catch (error) {
         if (error.response.status === 400) {
             message.value = error.response.data.message;
@@ -256,7 +212,7 @@ const handleEditArtist = async () => {
         console.log(response);
         showEditArtistModal.value = false;
         getArtists();
-        showEditAlert();
+        showEditToaster.value = true;
     } catch (error) {
         if (error.response && error.response.data) {
             errors.value = error.response.data.errors;
@@ -313,14 +269,18 @@ const viewArtist = (artist) => {
     artistToView.value = artist;
     showViewArtistModal.value = true;
 }
+
+const showSuccessToaster = ref(false);
+const showEditToaster = ref(false);
+const showDeleteToaster = ref(false);
 </script>
 
 <template>
     <section
         class="w-full min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-white flex transition-all duration-500 ease-in-out">
-        <div id="alerts-container" class="absolute top-8 right-8 z-50">
-                <!-- alerts will be dynamically added here -->
-        </div>
+        <Toast :show="showSuccessToaster" @close="showSuccessToaster = false" message="Artist added successfully." :icon="MdiCheck" variant="success" />
+        <Toast :show="showEditToaster" @close="showEditToaster = false" message="Artist updated successfully." :icon="MdiInformationVariantCircleOutline" variant="info" />
+        <Toast :show="showDeleteToaster" @close="showDeleteToaster = false" message="Artist deleted successfully." :icon="MdiClose" variant="danger" />
         <aside class="py-6 px-10 w-72 border-r border-gray-200 dark:border-gray-600">
             <div class="flex justify-center items-center">
                 <a href="#" class="font-display text-2xl">Artivity</a>
