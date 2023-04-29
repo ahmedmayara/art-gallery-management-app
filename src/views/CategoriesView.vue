@@ -252,9 +252,9 @@ const showDeleteToaster = ref(false);
     
     <section
         class="w-full min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-white flex transition-all duration-500 ease-in-out">
-        <Toast :show="showSuccessToaster" @close="showSuccessToaster = false" message="Category added successfully" :icon="MdiCheck" variant="success" />
-        <Toast :show="showEditToaster" @close="showEditToaster = false" message="Category updated successfully" :icon="MdiInformationVariantCircleOutline" variant="info" />
-        <Toast :show="showDeleteToaster" @close="showDeleteToaster = false" message="Category deleted successfully" :icon="MdiClose" variant="danger" />
+        <Toast :show="showSuccessToaster" @close="showSuccessToaster = false" message="Category added successfully." :icon="MdiCheck" variant="success" />
+        <Toast :show="showEditToaster" @close="showEditToaster = false" message="Category updated successfully." :icon="MdiInformationVariantCircleOutline" variant="info" />
+        <Toast :show="showDeleteToaster" @close="showDeleteToaster = false" message="Category deleted successfully." :icon="MdiClose" variant="danger" />
         <aside class="py-6 w-72 border-r border-gray-200 dark:border-gray-600">
             <div class="flex justify-center items-center">
                 <a href="#" class="font-display text-2xl">Artivity</a>

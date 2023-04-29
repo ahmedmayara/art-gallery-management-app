@@ -276,17 +276,17 @@ onMounted(() => {
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
                             <div v-if="order.status === 'Pending'">
-                                <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
+                                <span class="bg-yellow-200 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300 select-none">
                                     {{ order.status }}
                                 </span>
                             </div>
                             <div v-else-if="order.status === 'Approved'">
-                                <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                <span class="bg-green-200 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 select-none">
                                     {{ order.status }}
                                 </span>
                             </div>
                             <div v-else-if="order.status === 'Rejected'">
-                                <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                                <span class="bg-red-200 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300 select-none">
                                     {{ order.status }}
                                 </span>
                             </div> 
@@ -300,10 +300,10 @@ onMounted(() => {
                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                         <div class="flex justify-center">
                             <button :class="{ 'opacity-50 cursor-not-allowed' : order.status === 'Approved' }" @click="approveOrder(order.id)" class="outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 font-medium rounded-lg text-sm px-2.5 py-1.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700">
-                                <Icon icon="mdi:check-bold" width="25" />
+                                <Icon icon="mdi:check" width="25" />
                             </button>
                             <button :class="{ 'opacity-50 cursor-not-allowed' : order.status === 'Rejected' }" @click="rejectOrder(order.id)" class="outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700">
-                                <Icon icon="mdi:close-thick" width="25" />
+                                <Icon icon="mdi:close" width="25" />
                             </button>
                         </div>
                     </td>
