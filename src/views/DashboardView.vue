@@ -15,7 +15,7 @@ import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 const { artists, getArtists, totalArtists } = useArtists();
 const { getCategories, totalCategories } = useCategories();
-const { artboards, getArtboards, totalArtboards } = useArtboards();
+const { latestArtboards, getLatestArtboards, totalArtboards, getArtboards } = useArtboards();
 
 const router = useRouter();
 
@@ -119,6 +119,7 @@ onMounted(() => {
     getOrders();
     getArtists();
     getCategories();
+    getLatestArtboards();
     getArtboards();
 
     Chart.defaults.font.family = 'Inter';
@@ -390,7 +391,7 @@ onMounted(() => {
                         </RouterLink>
                     </div>
                     <div class="flow-root" style="height: 24.5rem;">
-                        <ul v-for="artboard in artboards" class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <ul v-for="artboard in latestArtboards" class="divide-y divide-gray-200 dark:divide-gray-700">
                             <li class="py-5">
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">

@@ -4,11 +4,25 @@ import router from "../router";
 
 export default function useArtboards() {
     const artboards = ref([]);
+    const latestArtboards = ref([]);
     const artboard = ref({});
     const totalArtboards = ref(0);
     const meta = ref({});
     const pages = ref([]);
     const errors = ref({});
+
+    const getLatestArtboards = async () => {
+        try {
+            const response = await axios.get("http://localhost:8000/api/artboards/latest", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            latestArtboards.value = response.data.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const getArtboards = async (page = 1) => {
         try {
@@ -104,6 +118,8 @@ export default function useArtboards() {
         artboard,
         errors,
         getArtboards,
+        getLatestArtboards,
+        latestArtboards,
         getArtboard,
         createArtboard,
         updateArtboard,
