@@ -15,6 +15,9 @@
             >
                 <div class="flex items-center w-full max-w-md p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800">
                     <div :class="alertClass">
+                        <div v-if="props.loading" class="animate-spin">
+                            <Icon icon="mingcute:loading-fill" class="w-5 h-5" />
+                        </div>
                         <component :is="props.icon" class="w-5 h-5" />
                     </div>
                     <div class="ml-4 text-sm font-normal select-none">
@@ -37,6 +40,7 @@ import { watch, computed } from 'vue';
 const props = defineProps({
     message: String,
     show: Boolean,
+    loading: Boolean,
     close: Function,
     icon: {
         type: Object,
@@ -45,7 +49,7 @@ const props = defineProps({
         type: String,
         default: 'success',
         validator(value) {
-            return ['success', 'danger', 'info'].includes(value)
+            return ['success', 'danger', 'info', 'transparent'].includes(value)
         }
     }
 });
@@ -57,6 +61,7 @@ const alertClass = computed(() => {
                 success: "text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200",
                 danger: "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200",
                 info: "text-blue-500 bg-blue-100 dark:bg-blue-800 dark:text-blue-200",
+                transparent: "text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-200",
             }
         }
     })({
