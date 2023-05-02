@@ -90,7 +90,7 @@ const total = computed(() => {
 const form = ref({
     user_id: localStorage.getItem('user_id'),
     artboards: cart.value,
-    total: total.value,
+    total: total
 });
 </script>
 
