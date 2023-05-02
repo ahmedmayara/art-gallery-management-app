@@ -16,7 +16,7 @@ import MdiInformationVariantCircleOutline from '~icons/mdi/information-variant-c
 const { artists, getArtists } = useArtists();
 
 onMounted(() => {
-    getArtists();
+    getAllArtists();
 })
 
 const router = useRouter();
@@ -273,6 +273,14 @@ const viewArtist = (artist) => {
 const showSuccessToaster = ref(false);
 const showEditToaster = ref(false);
 const showDeleteToaster = ref(false);
+
+const isLoading = ref(false);
+
+const getAllArtists = async () => {
+    isLoading.value = true;
+    await getArtists();
+    isLoading.value = false;
+}
 </script>
 
 <template>
@@ -446,6 +454,14 @@ const showDeleteToaster = ref(false);
                         </th>
                     </tr>
                 </thead>
+
+                <tr v-if="isLoading">
+                    <td class="px-6 py-4 whitespace-nowrap" colspan="8">
+                        <div class="flex justify-center items-center">
+                            <Icon icon="mingcute:loading-fill" class="w-10 h-10 text-gray-400 dark:text-gray-500 animate-spin" />
+                        </div>
+                    </td>
+                </tr>
 
                 <tr v-for="artist in filtredArtists" :key="artist.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap">
