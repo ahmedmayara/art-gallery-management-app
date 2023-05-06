@@ -5,6 +5,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
+import MingcuteLoadingFill from '~icons/mingcute/loading-fill'
 
 const router = useRouter();
 
@@ -33,6 +34,14 @@ const login = async () => {
         }
         console.log(errors.value);
     }
+}
+
+const isLoading = ref(false);
+
+const handleLogin = async() => {
+  isLoading.value = true;
+  await login();
+  isLoading.value = false
 }
 
 const isDark = useDark()
@@ -75,7 +84,7 @@ const toggleDark = useToggle(isDark)
           </p>
       </div>
       <div class="grid gap-6">
-        <form autocomplete="off" @submit.prevent="login">
+        <form autocomplete="off" @submit.prevent="handleLogin">
           <div class="grid gap-2">
             <div class="grid gap-1">
               <label for="email" class="block my-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
@@ -89,8 +98,9 @@ const toggleDark = useToggle(isDark)
               <span v-if="errors.password" class="text-red-500 text-sm font-bold mt-2">{{ errors.password[0] }}</span>
             </div>
             <div class="grid gap-1 mt-3">
-              <button type="submit" class="inline-flex ease-in-out duration-500 items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none text-white ring-offset-background bg-blue-500 hover:bg-blue-600 transition-colors h-10 py-2 px-4">
-                Log in
+              <button :class="{ 'cursor-not-allowed opacity-50' : isLoading }" type="submit" class="inline-flex ease-in-out duration-500 items-center justify-center rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none text-white ring-offset-background bg-blue-500 hover:bg-blue-600 transition-colors h-10 py-2 px-4">
+                <MingcuteLoadingFill v-show="isLoading" class="animate-spin" />
+                <span :class="{ 'hidden' : isLoading }">Login</span>
               </button>
               <RouterLink to="/" class="w-full mt-3 ease-in-out duration-500 md:hidden block text-white bg-slate-500 hover:bg-slate-600 font-medium rounded-md text-sm px-5 py-2.5 text-center transition-colors">Go back</RouterLink>
             </div>
