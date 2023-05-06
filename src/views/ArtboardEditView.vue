@@ -164,7 +164,7 @@ const sidebar = [
                 </div>
                 <div class="flex-1 flex items-center flex-col gap-y-2">
                     <label for="image" class="text-sm font-semibold text-gray-500 text-center mb-3">Image Preview</label>
-                    <img :src="artboard.image" :alt="artboard.title" class="object-cover" style="width: 32rem;">
+                    <img :src="artboard.image" :alt="artboard.title" class="object-cover w-[32rem]">
                 </div>
             </form> 
         </main>

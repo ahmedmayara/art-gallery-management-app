@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import moment from 'moment';
 import Modal from '../components/Modal.vue';
+import Toast from '../components/Toast.vue';
+import MdiCheck from '~icons/mdi/check'
 
 const router = useRouter();
 
@@ -102,6 +104,9 @@ const getOrders = async () => {
     }
 }
 
+const showApproveOrderToast = ref(false);
+const showLoadingToast = ref(false);
+
 const approveOrder = async ( orderId ) => {
     try {
         const response = await axios.put(`http://localhost:8000/api/v1/orders/${orderId}/approve`, null, {
@@ -133,11 +138,20 @@ const rejectOrder = async ( orderId ) => {
 onMounted(() => {
     getOrders();
 })
+
+const handleApproveOrder = async ( orderId ) => {
+    showLoadingToast.value = true;
+    await approveOrder(orderId);
+    showLoadingToast.value = false;
+    showApproveOrderToast.value = true;
+}
 </script>
 
 <template>
     <section
         class="w-full min-h-screen font-sans text-gray-900 bg-gray-50 dark:bg-gray-900 dark:text-white flex transition-all duration-500 ease-in-out">
+        <Toast :show="showLoadingToast" message="Please wait..." :loading="true" variant="transparent" />
+        <Toast :show="showApproveOrderToast" message="Order approved successfully!" @close="showApproveOrderToast = false" variant="success" :icon="MdiCheck" />
         <aside class="py-6 px-10 w-72 border-r border-gray-200 dark:border-gray-600 hidden lg:block">
             <div class="flex justify-center items-center">
                 <a href="#" class="font-display text-2xl">Artivity</a>
@@ -299,7 +313,7 @@ onMounted(() => {
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                         <div class="flex justify-center">
-                            <button :class="{ 'opacity-50 cursor-not-allowed' : order.status === 'Approved' }" @click="approveOrder(order.id)" class="outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 font-medium rounded-lg text-sm px-2.5 py-1.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700">
+                            <button :class="{ 'opacity-50 cursor-not-allowed' : order.status === 'Approved' }" @click="handleApproveOrder(order.id)" class="outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 font-medium rounded-lg text-sm px-2.5 py-1.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700">
                                 <Icon icon="mdi:check" width="25" />
                             </button>
                             <button :class="{ 'opacity-50 cursor-not-allowed' : order.status === 'Rejected' }" @click="rejectOrder(order.id)" class="outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-red-300 font-medium rounded-lg text-sm px-2.5 py-1.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700">

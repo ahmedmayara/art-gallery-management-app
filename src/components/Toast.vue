@@ -20,10 +20,10 @@
                         </div>
                         <component :is="props.icon" class="w-5 h-5" />
                     </div>
-                    <div class="ml-4 text-sm font-normal select-none">
+                    <div :class="{'mr-4' : props.loading}" class="ml-4 text-sm font-normal select-none">
                         <p v-text="props.message"></p>
                     </div>
-                    <button @click="emit('close')" class="ml-4 -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors ease-in-out duration-300">
+                    <button v-if="['success', 'info', 'danger'].includes(props.variant)" @click="emit('close')" class="ml-4 -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors ease-in-out duration-300">
                         <Icon icon="mdi:close" class="w-5 h-5" />
                     </button>
                 </div>
