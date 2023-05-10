@@ -17,7 +17,7 @@ import MdiInformationVariantCircleOutline from '~icons/mdi/information-variant-c
 const { categories, getCategories, meta, goToPage } = useCategories();
 
 onMounted(() => {
-    getCategories();
+    handleGetCategories();
 })
 
 const router = useRouter();
@@ -247,6 +247,14 @@ const confirmRead = (category) => {
 const showSuccessToaster = ref(false);
 const showEditToaster = ref(false);
 const showDeleteToaster = ref(false);
+
+const isLoading = ref(false);
+
+const handleGetCategories = async () => {
+    isLoading.value = true;
+    await getCategories();
+    isLoading.value = false;
+}
 </script>
 
 <template>
@@ -390,6 +398,15 @@ const showDeleteToaster = ref(false);
                         </th>
                     </tr>
                 </thead>
+
+                <tr v-if="isLoading">
+                    <td class="px-6 py-4 whitespace-nowrap" colspan="6">
+                        <div class="flex justify-center items-center">
+                            <Icon icon="mingcute:loading-fill" class="w-10 h-10 text-gray-400 dark:text-gray-500 animate-spin" />
+                        </div>
+                    </td>
+                </tr>
+
                 <tr v-for="category in filtredCategories" :key="category.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500">
