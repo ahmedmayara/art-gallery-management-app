@@ -74,6 +74,7 @@ const addToCart = (artboard) => {
 
 const removeFromCart = (artboard) => {
     cart.value = cart.value.filter(item => item.id !== artboard.id);
+    form.value.artboards = cart.value;
     localStorage.setItem('cart', JSON.stringify(cart.value));
     console.log(cart.value);
 };
