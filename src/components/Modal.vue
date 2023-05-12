@@ -55,10 +55,10 @@ watch(
                 >
                     <div
                         v-if="props.show"
-                        class="fixed inset-0 transition-opacity"
+                        class="fixed inset-0 transition-opacity backdrop-blur-sm bg-black/50"
                         aria-hidden="true"
                     >
-                        <div class="absolute inset-0 bg-black/50"></div>
+                        <div class="absolute inset-0"></div>
                     </div>
                 </Transition>
 
