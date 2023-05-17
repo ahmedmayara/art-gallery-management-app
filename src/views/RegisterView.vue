@@ -18,6 +18,7 @@ const form = ref({
     phone: '',
     email: '',
     password: '',
+    role: 'customer'
 });
 
 const handleRegister = async () => {
@@ -27,7 +28,13 @@ const handleRegister = async () => {
         
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        router.push('/dashboard');
+        localStorage.setItem('user_id', JSON.stringify(response.data.user.id));
+
+        if (response.data.user.role === 'admin') {
+            router.push('/dashboard');
+        } else {
+            router.push('/buy');
+        }
 
     } catch (error) {
         console.log(error);

@@ -23,8 +23,15 @@ const login = async () => {
         
         localStorage.setItem('token', response.data.access_token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('user_id', JSON.stringify(response.data.user.id));
 
-        router.push('/dashboard');
+        if (response.data.user.role === 'admin') {
+            localStorage.setItem('role', JSON.stringify(response.data.user.role));
+            router.push('/dashboard');
+        } else {
+            router.push('/buy');
+        }
+
         console.log(response);
     } catch (error) {
         if (error.response.status === 401) {

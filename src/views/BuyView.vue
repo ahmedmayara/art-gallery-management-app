@@ -6,7 +6,13 @@ import { computed, ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import Modal from '../components/Modal.vue';
+import Toast from '../components/Toast.vue';
+import MdiCheck from '~icons/mdi/check'
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue';
+
+const user = computed(() => {
+    return JSON.parse(localStorage.getItem('user'));
+});
 
 const getAllArtboards = async () => {
     try {
@@ -21,6 +27,39 @@ const getAllArtboards = async () => {
         }
     }
 };
+
+const handleLogout = async () => {
+    try {
+        const response = await axios.post('http://localhost:8000/api/v1/logout', null, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('role');
+        router.push('/login');
+        console.log(response);
+    } catch (error) {
+        if (error.response && error.response.data) {
+            console.log(error.response.data.errors);
+        } else {
+            console.log(error);
+        }
+    }
+}
+
+const handleMakeOrder = async () => {
+    try {
+        const response = await axios.post('http://localhost:8000/api/v1/orders', form.value, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const isLoading = ref(false);
 
@@ -93,10 +132,34 @@ const form = ref({
     artboards: cart.value,
     total: total
 });
+
+const showLogoutConfirmationModal = ref(false);
+
+const confirmLogout = () => {
+    showLogoutConfirmationModal.value = true;
+};
+
+const showSuccessToaster = ref(false);
+
+const showLoadingToaster = ref(false);
+
+const handleOrder = async () => {
+    showLoadingToaster.value = true;
+    await handleMakeOrder();
+    setTimeout(() => {
+        showLoadingToaster.value = false;
+        showSuccessToaster.value = true;
+    }, 3500);
+    cart.value = [];
+    localStorage.setItem('cart', JSON.stringify(cart.value));
+    form.value.artboards = cart.value;
+};
 </script>
 
 <template>
     <div class="w-full bg-slate-200 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-white transition-colors duration-500 ease-in-out">
+        <Toast :show="showLoadingToaster" :loading="true" message="Please wait while we proccess your order..." variant="transparent" />
+        <Toast :show="showSuccessToaster" @close="showSuccessToaster = false" :icon="MdiCheck" message="Your order has been placed successfully!" variant="success" />
         <nav class="border-b border-gray-300 dark:border-gray-600">
             <div class="px-4 mx-auto max-w-7xl">
                 <div class="flex items-center gap-x-6 h-20">
@@ -112,7 +175,7 @@ const form = ref({
                     <div class="flex items-center space-x-4">
                         <div class="relative cursor-pointer inline-flex items-center justify-center w-9 h-9 overflow-hidden bg-gray-300 rounded-full dark:bg-gray-600">
                             <span class="font-medium text-sm text-gray-600 dark:text-gray-300">
-                                AM
+                                {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
                             </span>
                         </div>
                         <button class="ml-4" @click="toggleDark()">
@@ -176,7 +239,7 @@ const form = ref({
                                                 <button :class="{ 'opacity-25 dark:opacity-50 cursor-not-allowed' : cart.length === 0 }" @click="cart = []" class="w-full text-white bg-red-700 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600">
                                                     Clear Cart
                                                 </button>
-                                                <button :class="{ 'opacity-25 dark:opacity-50 cursor-not-allowed' : cart.length === 0 }" class="w-full text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 ml-2">
+                                                <button @click="handleOrder" :class="{ 'opacity-25 dark:opacity-50 cursor-not-allowed' : cart.length === 0 }" class="w-full text-white bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 ml-2">
                                                     Checkout
                                                 </button>
                                             </div>
@@ -184,7 +247,7 @@ const form = ref({
                                     </MenuItems>
                                 </Transition>
                             </Menu>
-                            <button :class="{ 'relative right-2' : cart.length > 0 }">
+                            <button @click="confirmLogout" :class="{ 'relative right-2' : cart.length > 0 }">
                                 <Icon icon="ph:sign-out-duotone" class="w-6 h-6" :class="isDark ? 'text-white' : 'text-gray-500'" />
                             </button>
                         </div>
@@ -244,5 +307,23 @@ const form = ref({
                 </figure>
             </div>
         </main>
+
+        <Modal v-model:show="showLogoutConfirmationModal" title="Logout Confirmation" @close="showLogoutConfirmationModal = false">
+                        <template #header>
+                            <div class="flex justify-center items-center">
+                                <Icon icon="ion:ios-warning" width="25" />
+                                <h1 class="text-md font-semibold leading-relaxed ml-3">Logout Confirmation</h1>
+                            </div>
+                        </template>
+                        <template #body>
+                            <p class="text-gray-500 text-lg font-medium">
+                                Are you sure you want to logout?
+                            </p>
+                        </template>
+                        <template #footer>
+                            <button @click="showLogoutConfirmationModal = false" class="px-4 ml-2 py-2 text-white bg-slate-500 rounded-md hover:bg-slate-600 transition-colors">Cancel</button>
+                            <button @click="handleLogout" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">Logout</button>
+                        </template>
+                    </Modal>
     </div>
 </template>

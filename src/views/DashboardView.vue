@@ -254,7 +254,7 @@ onMounted(() => {
                                         Order ID : <span class="font-semibold">#000{{ pendingOrder.id }}</span>
                                     </p>
                                     <p class="text-xs text-gray-900 dark:text-white mb-2">
-                                        Made by : <span class="font-semibold">{{ pendingOrder.customer.first_name }} {{ pendingOrder.customer.last_name }}</span>
+                                        Made by : <span class="font-semibold">{{ pendingOrder.user.first_name }} {{ pendingOrder.user.last_name }}</span>
                                     </p>
                                     <p class="text-xs text-gray-900 dark:text-white mb-2">
                                         Status : <span class="ml-1 bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">

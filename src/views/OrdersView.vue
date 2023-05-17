@@ -246,7 +246,7 @@ const handleApproveOrder = async ( orderId ) => {
                             Order ID
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Artboard Title
+                            Items
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Customer Name
@@ -269,22 +269,22 @@ const handleApproveOrder = async ( orderId ) => {
                 <tr v-for="order in orders" :key="order.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
-                            000{{ order.id }}
+                            {{ order.id }}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div v-for="item in JSON.parse(order.artboards)" class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
+                            {{ item.title }}
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
-                            {{ order.artboard.title }}
+                            {{ order.user.first_name }} {{ order.user.last_name }}
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
-                            {{ order.customer.first_name }} {{ order.customer.last_name }}
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-md text-gray-900 dark:text-gray-500 flex justify-center items-center">
-                            {{ order.customer.phone }}
+                            {{ order.user.phone }}
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">

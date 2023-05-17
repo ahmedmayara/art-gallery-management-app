@@ -30,6 +30,13 @@ const router = createRouter({
       path: '/buy',
       name: 'buy',
       component: BuyView,
+      beforeEnter: (to, from, next) => {
+        if (!localStorage.getItem('token')) {
+          next('/login')
+        } else {
+          next()
+        }
+      }
     },
     {
       path: '/register',
@@ -41,7 +48,7 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView,
       beforeEnter: (to, from, next) => {
-        if (!localStorage.getItem('token') && !localStorage.getItem('role')) {
+        if (!localStorage.getItem('token') || !localStorage.getItem('role')) {
           next('/unauthorized')
         } else {
           next()

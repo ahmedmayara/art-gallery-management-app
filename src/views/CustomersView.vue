@@ -50,6 +50,7 @@ const getAllCustomers = async () => {
             },
         });
         customers.value = response.data.data;
+        console.log(response);
     } catch (error) {
         console.log(error);
     }
@@ -223,7 +224,7 @@ const toggleDropdown = () => {
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-md text-gray-900 dark:text-gray-500">
-                            (+216) {{ user.phone }}
+                            {{ user.phone }}
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
