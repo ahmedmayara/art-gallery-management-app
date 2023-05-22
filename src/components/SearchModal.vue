@@ -98,7 +98,7 @@ const navigateArtwokrs = (e) => {
                 leave-from="opacity-100"
                 leave-to="opacity-0"
         >
-                <DialogOverlay class="fixed inset-0 bg-black/50 backdrop-blur-sm" />
+                <DialogOverlay class="fixed inset-0 bg-slate-900/25 backdrop-blur-sm" />
             </TransitionChild>
 
             <TransitionChild as="template"

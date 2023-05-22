@@ -55,7 +55,7 @@ watch(
                 >
                     <div
                         v-if="props.show"
-                        class="fixed inset-0 backdrop-blur-sm bg-black/50"
+                        class="fixed inset-0 bg-slate-900/25 backdrop-blur-sm"
                         aria-hidden="true"
                     >
                         <div class="absolute inset-0"></div>

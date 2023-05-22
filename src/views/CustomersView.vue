@@ -57,7 +57,7 @@ const getAllCustomers = async () => {
 }
 
 onMounted(() => {
-    getAllCustomers();
+    handleGetAllCustomers();
 })
 
 const isDark = useDark()
@@ -100,6 +100,14 @@ const isVisibile = ref(false);
 
 const toggleDropdown = () => {
     isVisibile.value = !isVisibile.value;
+}
+
+const isLoading = ref(false);
+
+const handleGetAllCustomers = async () => {
+    isLoading.value = true;
+    await getAllCustomers();
+    isLoading.value = false;
 }
 </script>
 
@@ -210,6 +218,14 @@ const toggleDropdown = () => {
                         </th>
                     </tr>
                 </thead>
+
+                <tr v-if="isLoading">
+                    <td class="px-6 py-4 whitespace-nowrap" colspan="4">
+                        <div class="flex justify-center items-center">
+                            <Icon icon="mingcute:loading-fill" class="w-10 h-10 text-gray-400 dark:text-gray-500 animate-spin" />
+                        </div>
+                    </td>
+                </tr>
 
                 <tr v-for="user in customers" :key="user.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap">

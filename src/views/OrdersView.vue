@@ -136,7 +136,7 @@ const rejectOrder = async ( orderId ) => {
 }
 
 onMounted(() => {
-    getOrders();
+    handleGetAllOrders();
 })
 
 const handleApproveOrder = async ( orderId ) => {
@@ -144,6 +144,14 @@ const handleApproveOrder = async ( orderId ) => {
     await approveOrder(orderId);
     showLoadingToast.value = false;
     showApproveOrderToast.value = true;
+}
+
+const isLoading = ref(false);
+
+const handleGetAllOrders = async () => {
+    isLoading.value = true;
+    await getOrders();
+    isLoading.value = false;
 }
 </script>
 
@@ -265,6 +273,14 @@ const handleApproveOrder = async ( orderId ) => {
                         </th>
                     </tr>
                 </thead>
+
+                <tr v-if="isLoading">
+                    <td class="px-6 py-4 whitespace-nowrap" colspan="7">
+                        <div class="flex justify-center items-center">
+                            <Icon icon="mingcute:loading-fill" class="w-10 h-10 text-gray-400 dark:text-gray-500 animate-spin" />
+                        </div>
+                    </td>
+                </tr>
 
                 <tr v-for="order in orders" :key="order.id" class="border-b border-gray-200 dark:border-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap">
